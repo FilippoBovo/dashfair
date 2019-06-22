@@ -1,0 +1,17 @@
+#navigation-bar {
+    text-align: left;
+    width: 100%;
+    margin: 10pt;
+}
+
+#dash {
+    font-size: 40px;
+    color: #97cefe;
+    font-weight: bold;
+}
+
+#fair {
+    font-size: 40px;
+    color: #f7bcc6;
+    font-weight: bold;
+}

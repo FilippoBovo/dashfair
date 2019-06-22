@@ -1,0 +1,39 @@
+.odds-box {
+    height: 20px;
+    width: 300px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.odds {
+    float: left;
+    height: 20px;
+    width: 50px;
+    text-align: center;
+    line-height: 20px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 12pt;
+}
+
+.green-background {
+    background-color: #4ffe8e;
+}
+
+.size {
+    float: left;
+    height: 20px;
+    width: 120px;
+    padding-right: 5px;
+    text-align: right;
+    line-height: 20px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 12pt;
+}
+
+.back-color {
+    background-color: #97cefe;
+}
+
+.lay-color {
+    background-color: #f7bcc6;
+}
