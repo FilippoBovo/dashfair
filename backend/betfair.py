@@ -162,6 +162,7 @@ class Betfair:
         if self.stream is not None:
             logger.info("Stopping the Betfair market stream.")
             self.stream.stop()
+            self.stream.listener.output_queue.put("Terminate")
             self.stream = None
         else:
             logger.info("No existing Betfair market stream to stop.")

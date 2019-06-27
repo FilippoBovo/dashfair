@@ -1,8 +1,8 @@
 import React from 'react';
 import './MarketInfoBox.css'
 
-const setMarketSelection = (marketId, selectionId) => {
-    const betfairUrl = 'http://localhost:5000/betfair';
+const startLadderStream = (marketId, selectionId) => {
+    const betfairUrl = 'http://localhost:5000/start_ladder_stream';
 
     return fetch(betfairUrl, {
         method: 'post',
@@ -26,7 +26,33 @@ const setMarketSelection = (marketId, selectionId) => {
             if (data) {
                 return data;
             } else {
-                throw new Error("No data in response score in response");
+                throw new Error("No data in response");
+            }
+        });
+};
+
+const stopLadderStream = () => {
+    const betfairUrl = 'http://localhost:5000/stop_ladder_stream';
+
+    return fetch(betfairUrl, {
+        method: 'post',
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error(response.statusText);
+            }
+        })
+        .then(data => {
+            if (data) {
+                return data;
+            } else {
+                throw new Error("No data in response");
             }
         });
 };
@@ -36,6 +62,7 @@ class MarketInfoBox extends React.Component {
         super(props);
 
         this.state = {
+            streaming: false,
             marketId: "",
             selectionId: null,
             eventType: "",
@@ -57,9 +84,10 @@ class MarketInfoBox extends React.Component {
 
     onStartBetfairStream = () => {
         const { marketId, selectionId } = this.state;
-        setMarketSelection(marketId, selectionId)
+        startLadderStream(marketId, selectionId)
             .then(data => {
                 this.setState({
+                    streaming: true,
                     eventType: data.event_type,
                     eventName: data.event_name,
                     competitionName: data.competition_name,
@@ -71,8 +99,18 @@ class MarketInfoBox extends React.Component {
             .catch(err => console.error(err))
     };
 
+    onStopBetfairStream = () => {
+        stopLadderStream()
+            .then(data => {
+                this.setState({
+                    streaming: false
+                })
+            })
+            .catch(err => console.error(err))
+    };
+
     render() {
-        let { eventType, eventName, competitionName, marketName, eventStartTime, selectionName } = this.state;
+        let { streaming, eventType, eventName, competitionName, marketName, eventStartTime, selectionName } = this.state;
 
         return (
             <div id="market-info-bar">
@@ -97,11 +135,19 @@ class MarketInfoBox extends React.Component {
                     />
                 </div>
                 <div className="field">
-                    <input
-                        onClick={this.onStartBetfairStream}
-                        type="submit"
-                        value="Start"
-                    />
+                    {
+                        !streaming
+                            ? <input
+                                onClick={this.onStartBetfairStream}
+                                type="submit"
+                                value="Start"
+                            />
+                            : <input
+                                onClick={this.onStopBetfairStream}
+                                type="submit"
+                                value="Stop"
+                            />
+                    }
                 </div>
                 <div className="field">&nbsp;</div>
                 <div className="field">

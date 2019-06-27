@@ -7,7 +7,7 @@ import { generateOddsLadder } from '../../utils'
 
 const url = "http://127.0.0.1";
 const port = "5000";
-const namespace = "/test";
+const namespace = "/market_ladder";
 const endpoint = url + ":" + port + namespace;
 
 class OddsLadder extends React.Component {
@@ -27,7 +27,7 @@ class OddsLadder extends React.Component {
     componentDidMount() {
         const socket = socketIOClient(endpoint);
 
-        socket.on("my_response", data => {
+        socket.on("ladder_stream", data => {
             let priceUpdate = data.priceUpdate;
 
             this.setState((prevState) => {

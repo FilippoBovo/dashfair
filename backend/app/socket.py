@@ -13,21 +13,23 @@ thread = None
 thread_lock = Lock()
 
 
-def send_ladder_stream(
-        ladder_queue: queue.Queue, selection_id: int, period_ms: float
-) -> None:
+def send_ladder_stream(ladder_queue: queue.Queue, selection_id: int) -> None:
     """Send the ladder stream information using a socket.
 
     Args:
         ladder_queue: Betfair market ladder queue.
-        selection_id: Selection ID
-        period_ms: Stream update period in milliseconds.
+        selection_id: Selection ID.
     """
     while True:
         try:
             price_update = {}
 
             market_books = ladder_queue.get()
+
+            if market_books == "Terminate":
+                logger.info("Terminating ladder stream.")
+                break
+
             market_book = market_books[0]
 
             for runner in market_book.runners:
@@ -49,10 +51,7 @@ def send_ladder_stream(
                 data = {'priceUpdate': price_update}
                 logger.info(data)
 
-                socketio.emit('my_response', data, namespace="/test")
-
-                period_s = period_ms / 1000.  # Period in seconds
-                socketio.sleep(seconds=period_s)
+                socketio.emit('ladder_stream', data, namespace="/market_ladder")
 
         except KeyboardInterrupt:
             logger.info("Exiting program (Keyboard interrupt)")
@@ -61,14 +60,13 @@ def send_ladder_stream(
 
 
 def start_background_ladder_stream(
-    ladder_queue: queue.Queue, selection_id: int, period_ms: float
+    ladder_queue: queue.Queue, selection_id: int
 ) -> None:
     """Start a background task to send the ladder stream information.
 
     Args:
         ladder_queue: Betfair market ladder queue.
-        selection_id: Selection ID
-        period_ms: Stream update period in milliseconds.
+        selection_id: Selection ID.
     """
     global thread
 
@@ -77,6 +75,5 @@ def start_background_ladder_stream(
             thread = socketio.start_background_task(
                 send_ladder_stream,
                 ladder_queue,
-                selection_id,
-                period_ms
+                selection_id
             )

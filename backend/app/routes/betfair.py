@@ -6,7 +6,7 @@ from app import socket
 from app.errors import bad_request
 
 
-@app.route('/betfair', methods=['POST'])
+@app.route('/start_ladder_stream', methods=['POST'])
 def start_betfair_ladder_stream() -> flask.Response:
     """Start a ladder stream and return the event and market information.
 
@@ -34,9 +34,7 @@ def start_betfair_ladder_stream() -> flask.Response:
             market_id, conflate_ms=50
     )
 
-    socket.start_background_ladder_stream(
-        ladder_queue, selection_id, period_ms=50
-    )
+    socket.start_background_ladder_stream(ladder_queue, selection_id)
 
     # Get event, market and selection information
     event_type, event, competition = betfair_client.get_event_info(market_id)
@@ -54,5 +52,15 @@ def start_betfair_ladder_stream() -> flask.Response:
             'selection_name': selection_name
         }
     )
+
+    return response
+
+
+@app.route('/stop_ladder_stream', methods=['POST'])
+def stop_betfair_ladder_stream() -> flask.Response:
+    betfair_client.stop_betfair_ladder_stream()
+    socket.thread = None
+
+    response = jsonify({})
 
     return response
