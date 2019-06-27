@@ -1,3 +1,4 @@
+import flask
 from flask import jsonify, request
 
 from app import app, betfair_client
@@ -6,7 +7,12 @@ from app.errors import bad_request
 
 
 @app.route('/betfair', methods=['POST'])
-def set_market_selection():
+def start_betfair_ladder_stream() -> flask.Response:
+    """Start a ladder stream and return the event and market information.
+
+    Returns:
+        Flask Response object with event and market information.
+    """
     data = request.get_json() or {}
 
     # Check request parameters
@@ -25,10 +31,12 @@ def set_market_selection():
         betfair_client.stop_betfair_ladder_stream()
 
     ladder_queue = betfair_client.start_betfair_ladder_stream(
-            market_id, period=1.
+            market_id, conflate_ms=50
     )
 
-    socket.start_background_ladder_stream(ladder_queue, selection_id, period=1.)
+    socket.start_background_ladder_stream(
+        ladder_queue, selection_id, period_ms=50
+    )
 
     # Get event, market and selection information
     event_type, event, competition = betfair_client.get_event_info(market_id)

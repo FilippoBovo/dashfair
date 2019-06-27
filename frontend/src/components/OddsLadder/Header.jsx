@@ -3,7 +3,7 @@ import './Header.css';
 
 const Header = () => {
     return (
-        <div className="header">
+        <div id="ladder-header">
             <div className="back-lay">To Back</div>
             <div className="price">Price</div>
             <div className="back-lay">To Lay</div>

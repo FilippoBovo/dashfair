@@ -1,11 +1,11 @@
-.header {
+#ladder-header {
     height: 20px;
     width: 300px;
     display: inline-block;
     vertical-align: top;
 }
 
-.price {
+#ladder-header .price {
     float: left;
     height: 20px;
     width: 50px;
@@ -16,7 +16,7 @@
     font-weight: bold;
 }
 
-.back-lay {
+#ladder-header .back-lay {
     float: left;
     height: 20px;
     width: 125px;

@@ -1,15 +1,17 @@
 import React from 'react';
 import './Dashboard.css'
 import NavigationBar from "../NavigationBar/NavigationBar";
-import MarketInfoBar from "../MarketInfoBar/MarketInfoBar";
+import MarketInfoBox from "../MarketInfoBox/MarketInfoBox";
 import OddsLadder from "../OddsLadder/OddsLadder";
 
 const Dashboard = () => {
     return (
-        <div id="dashboard">
+        <div>
             <NavigationBar/>
-            <MarketInfoBar/>
-            <OddsLadder/>
+            <div id="dashboard">
+                <MarketInfoBox/>
+                <OddsLadder/>
+            </div>
         </div>
     )
 };

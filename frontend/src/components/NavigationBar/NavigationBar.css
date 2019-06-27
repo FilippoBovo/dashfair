@@ -1,7 +1,8 @@
 #navigation-bar {
     text-align: left;
-    width: 100%;
-    margin: 10pt;
+    width: 490px;
+    padding: 10pt;
+    margin: auto;
 }
 
 #dash {

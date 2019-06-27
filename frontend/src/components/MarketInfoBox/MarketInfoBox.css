@@ -1,0 +1,16 @@
+#market-info-bar {
+    float: left;
+    width: 180px;
+    height: 680px;
+    padding: 10px;
+    text-align: left;
+}
+
+#market-info-bar .field {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#market-info-bar .field label {
+    display: block;
+}

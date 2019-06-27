@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class Betfair:
+    """Betfair interface."""
     def __init__(self):
         logger.info("Initialising Betfair client.")
         self._client = betfairlightweight.APIClient(
@@ -37,7 +38,7 @@ class Betfair:
         """Get the event information for a Betfair market ID.
 
         Args:
-            market_id: ID of the Betfair market.
+            market_id: Betfair market ID.
 
         Returns:
             Event type, event name and competition name.
@@ -76,11 +77,11 @@ class Betfair:
         """Get the market information from a Betfair market ID.
 
         Args:
-            market_id: ID of the Betfair market.
+            market_id: Betfair market ID.
 
         Returns:
-            Market name, market start time (that is, when the event starts), market
-            selections mapping from ID to name.
+            Market name, market start time (that is, when the event starts),
+            market selections mapping from ID to name.
         """
         market_filter_ = market_filter(market_ids=[market_id])
 
@@ -103,9 +104,17 @@ class Betfair:
         return market_name, market_start_time, selections
 
     def start_betfair_ladder_stream(
-            self, market_id: str, period: float
+            self, market_id: str, conflate_ms: float
     ) -> queue.Queue:
-        # TODO Docstring
+        """Start the Betfair ladder stream.
+
+        Args:
+            market_id: Betfair market ID.
+            conflate_ms: Conflation rate in milliseconds.
+
+        Returns:
+            Market ladder queue.
+        """
         if self.stream is not None:
             logger.info(
                 "There is already a Betfair market stream running. Before "
@@ -138,7 +147,7 @@ class Betfair:
         stream.subscribe_to_markets(
             market_filter=market_filter_,
             market_data_filter=market_data_filter,
-            conflate_ms=min(period * 1000, 120000),
+            conflate_ms=min(conflate_ms, 120000),
         )
 
         logger.info("Starting the Betfair market stream.")
@@ -148,7 +157,8 @@ class Betfair:
 
         return ladder_queue
 
-    def stop_betfair_ladder_stream(self):
+    def stop_betfair_ladder_stream(self) -> None:
+        """Stop a running Betfair ladder stream."""
         if self.stream is not None:
             logger.info("Stopping the Betfair market stream.")
             self.stream.stop()

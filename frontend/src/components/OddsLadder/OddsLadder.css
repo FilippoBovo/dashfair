@@ -1,12 +1,13 @@
-.ladder-box {
-    height: 650px;
-    width: 300px;
-    margin-left: 10pt;
+#ladder-box {
+    float: left;
+    height: 700px;
+    width: 290px;
+    padding-left: 10px;
 }
 
-.ladder {
+#ladder {
     overflow: scroll;
     border: 1px solid gray;
-    height: 650px;
+    height: 700px;
     width: 300px;
 }

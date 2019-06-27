@@ -37,33 +37,20 @@ class OddsLadder extends React.Component {
                 Object.keys(prevLadder).forEach((key) => {
                     let sizesUpdate = priceUpdate[key] || {"backSize": null, "laySize": null};
 
-                    if ((sizesUpdate.backSize === prevLadder[key].backSize)  && (sizesUpdate.laySize === prevLadder[key].laySize)) {
+                    if (
+                        (sizesUpdate.backSize === prevLadder[key].backSize) &&
+                        (sizesUpdate.laySize === prevLadder[key].laySize)
+                    ) {
                         Object.assign(
                             newLadder,
                             {[key]: Object.assign({}, sizesUpdate, {hasChanged: false})}
                         )
-
-                        console.log("same");
                     } else {
                         Object.assign(
                             newLadder,
                             {[key]: Object.assign({}, sizesUpdate, {hasChanged: true})}
                         )
-
-                        console.log("different");
                     }
-
-                    // if (Object.keys(priceUpdate).includes(key)) {
-                    //     Object.assign(
-                    //         newLadder,
-                    //         {[key]: Object.assign({}, priceUpdate[key], {hasChanged: true})}
-                    //     )
-                    // } else {
-                    //     Object.assign(
-                    //         newLadder,
-                    //         {[key]: Object.assign({}, prevLadder[key], {hasChanged: false})}
-                    //     )
-                    // }
                 });
 
                 return {ladder: newLadder}
@@ -82,9 +69,9 @@ class OddsLadder extends React.Component {
         );
 
         return (
-            <div className="ladder-box">
+            <div id="ladder-box">
                 <Header/>
-                <div className="ladder">
+                <div id="ladder">
                     {oddsLadder.map((key, i) => {
                         return (
                             <OddsBox

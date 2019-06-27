@@ -1,13 +1,12 @@
 import React from 'react';
-import './MarketInfoBar.css'
+import './MarketInfoBox.css'
 
 const setMarketSelection = (marketId, selectionId) => {
-    const sentimentUrl = 'http://localhost:5000/betfair';
+    const betfairUrl = 'http://localhost:5000/betfair';
 
-    return fetch(sentimentUrl, {
+    return fetch(betfairUrl, {
         method: 'post',
         headers: {
-            // 'Authorization': 'Bearer ' + token,
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json'
         },
@@ -32,7 +31,7 @@ const setMarketSelection = (marketId, selectionId) => {
         });
 };
 
-class MarketInfoBar extends React.Component {
+class MarketInfoBox extends React.Component {
     constructor(props) {
         super(props);
 
@@ -77,29 +76,57 @@ class MarketInfoBar extends React.Component {
 
         return (
             <div id="market-info-bar">
-                <div id="input-bar">
-                    <label>Market ID</label>
+                <div className="field">
+                    <label>Market ID:</label>
                     <input
                         type="text"
                         name="market-id"
                         id="market-id"
+                        placeholder="Eg: 1.234567890"
                         onChange={this.onMarketIdChange}
                     />
-                    <label>Selection ID</label>
+                </div>
+                <div className="field">
+                    <label>Selection ID:</label>
                     <input
                         type="number"
                         name="market-id"
                         id="market-id"
+                        placeholder="Eg: 12345"
                         onChange={this.onSelectionIdChange}
                     />
+                </div>
+                <div className="field">
                     <input
                         onClick={this.onStartBetfairStream}
                         type="submit"
                         value="Start"
                     />
                 </div>
-                <div id="output-bar">
-                    <label>Event Type: {eventType} – Competition Name: {competitionName} – Event Name: {eventName} – Start Time: {eventStartTime} – Market: {marketName} – Selection: {selectionName}</label>    
+                <div className="field">&nbsp;</div>
+                <div className="field">
+                    <label>Event Type:</label>
+                    <label>{eventType}</label>
+                </div>
+                <div className="field">
+                    <label>Competition Name:</label>
+                    <label>{competitionName}</label>
+                </div>
+                <div className="field">
+                    <label>Event Name:</label>
+                    <label>{eventName}</label>
+                </div>
+                <div className="field">
+                    <label>Start Time:</label>
+                    <label>{eventStartTime}</label>
+                </div>
+                <div className="field">
+                    <label>Market Name:</label>
+                    <label>{marketName}</label>
+                </div>
+                <div className="field">
+                    <label>Selection Name:</label>
+                    <label>{selectionName}</label>
                 </div>
             </div>
         )
@@ -107,4 +134,4 @@ class MarketInfoBar extends React.Component {
 
 }
 
-export default MarketInfoBar;
+export default MarketInfoBox;

@@ -1,8 +1,8 @@
 import logging
+import queue
 from threading import Lock
 
 from app import socketio, betfair_client
-from config import BetfairConfig
 import utils
 
 
@@ -13,20 +13,16 @@ thread = None
 thread_lock = Lock()
 
 
-def mock_ladder_stream():
-    """Mock a price change stream."""
-    while True:
-        price_update = mock_price_update()
+def send_ladder_stream(
+        ladder_queue: queue.Queue, selection_id: int, period_ms: float
+) -> None:
+    """Send the ladder stream information using a socket.
 
-        data = {'priceUpdate': price_update}
-
-        socketio.emit('my_response', data, namespace="/test")
-
-        socketio.sleep(1.)
-
-
-def send_ladder_stream(ladder_queue, selection_id, period):
-
+    Args:
+        ladder_queue: Betfair market ladder queue.
+        selection_id: Selection ID
+        period_ms: Stream update period in milliseconds.
+    """
     while True:
         try:
             price_update = {}
@@ -55,7 +51,8 @@ def send_ladder_stream(ladder_queue, selection_id, period):
 
                 socketio.emit('my_response', data, namespace="/test")
 
-                socketio.sleep(seconds=period)
+                period_s = period_ms / 1000.  # Period in seconds
+                socketio.sleep(seconds=period_s)
 
         except KeyboardInterrupt:
             logger.info("Exiting program (Keyboard interrupt)")
@@ -63,7 +60,16 @@ def send_ladder_stream(ladder_queue, selection_id, period):
             betfair_client.logout()
 
 
-def start_background_ladder_stream(ladder_queue, selection_id, period):
+def start_background_ladder_stream(
+    ladder_queue: queue.Queue, selection_id: int, period_ms: float
+) -> None:
+    """Start a background task to send the ladder stream information.
+
+    Args:
+        ladder_queue: Betfair market ladder queue.
+        selection_id: Selection ID
+        period_ms: Stream update period in milliseconds.
+    """
     global thread
 
     with thread_lock:
@@ -72,5 +78,5 @@ def start_background_ladder_stream(ladder_queue, selection_id, period):
                 send_ladder_stream,
                 ladder_queue,
                 selection_id,
-                period
+                period_ms
             )
