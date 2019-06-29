@@ -2,6 +2,8 @@
 
 DashFair is a simple interface, built using Python's [Flask](http://flask.pocoo.org/) and Javascript's [React](https://reactjs.org/), to view the market ladder of a selection in [Betfair](https://www.betfair.com/).
 
+![DashFair Screenshot](resources/dashfair_screenshot.png)
+
 Note that you need to have a Betfair account and a [Betfair API key](https://developer.betfair.com/en/get-started/) with the streaming service enabled.
 
 ## Install
