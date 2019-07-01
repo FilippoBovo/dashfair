@@ -139,8 +139,9 @@ class Betfair:
 
         logger.info("Initialising streaming market data filter.")
         market_data_filter = streaming_market_data_filter(
-            # fields=['EX_MARKET_DEF', 'EX_ALL_OFFERS', 'EX_TRADED']
-            fields=['EX_MARKET_DEF', 'EX_ALL_OFFERS']
+            # fields=['EX_MARKET_DEF', 'EX_ALL_OFFERS'],  # Without virtual bets
+            fields=['EX_MARKET_DEF', 'EX_BEST_OFFERS_DISP'],  # With virtual bets
+            ladder_levels=10
         )
 
         logger.info("Subscribing to the market.")
