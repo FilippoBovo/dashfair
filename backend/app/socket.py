@@ -37,13 +37,13 @@ def send_ladder_stream(ladder_queue: queue.Queue, selection_id: int) -> None:
                     continue
 
                 for back in runner.ex.available_to_back:
-                    back_price = utils.odds_str_repr(float(back.price))
+                    back_price = utils.price_str_repr(float(back.price))
                     price_update[back_price] = {
                         "backSize": back.size, "laySize": None
                     }
 
                 for lay in runner.ex.available_to_lay:
-                    lay_price = utils.odds_str_repr(float(lay.price))
+                    lay_price = utils.price_str_repr(float(lay.price))
                     price_update[lay_price] = {
                         "backSize": None, "laySize": lay.size
                     }
