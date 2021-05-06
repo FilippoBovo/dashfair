@@ -4,7 +4,7 @@ chardet==3.0.4
 ciso8601==2.0.1
 Click==7.0
 Flask==1.0.3
-Flask-Cors==3.0.7
+Flask-Cors==3.0.9
 Flask-SocketIO==4.0.0
 idna==2.8
 itsdangerous==1.1.0
